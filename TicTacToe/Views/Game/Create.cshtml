@@ -1,0 +1,76 @@
+﻿@model TicTacToe.Models.Game
+
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h3 class="text-center">Крестики - нолики</h3>
+        <hr />   
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Player, htmlAttributes: new { @class = "control-label col-md-6" })
+            <div class="col-md-6 ">
+                @Html.EditorFor(model => model.Player, "test", new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Player, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.PlayerTeamId, htmlAttributes: new { @class = "control-label col-md-6" })
+            <div class="col-md-6 ">                
+                <div class="btn-group" data-toggle="buttons">
+                    @{for (int i = 1; i <= 2; i++)
+                        {
+                            if (i == 1)
+                            {<label class="btn btn-default active">@Html.RadioButtonFor(model => model.PlayerTeamId, i, new { @class = "radioButton", @checked = "checked" })X</label>}
+                            else
+                            {<label class="btn btn-default">@Html.RadioButtonFor(model => model.PlayerTeamId, i, new { @class = "radioButton" })O</label>}
+                        }
+                    }
+                    </div>
+               </div>
+        </div>
+        
+        <div class="form-group">
+            @Html.LabelFor(model => model.LevelId, htmlAttributes: new { @class = "control-label col-md-6" })
+            <div class="col-md-6">
+                <div class="btn-group" data-toggle="buttons">
+                    @{bool first = true;}
+                    @foreach (var item in (List<TicTacToe.Models.Level>)ViewBag.Levels)
+                    {
+                        if (first)
+                        {
+                            <label class="btn btn-default active">@Html.RadioButtonFor(model => model.LevelId, item.Id, new { @class = "radioButton", @checked = "checked" })@item.LevelName</label>
+                            first = false;
+                        }
+                        else
+                        {<label class="btn btn-default">@Html.RadioButtonFor(model => model.LevelId, item.Id, new { @class = "radioButton" })@item.LevelName</label>}
+                   
+                    }
+                                       
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="form-group text-center">
+            <div class="col-md-12">
+                <input type="submit" value="Старт" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+    }
+
+<p class="text-center">@Html.ActionLink("История игр", "ListGames", "HistoryGames")</p>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

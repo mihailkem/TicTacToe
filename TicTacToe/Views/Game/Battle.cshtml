@@ -1,0 +1,75 @@
+﻿@model TicTacToe.Models.Fields
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script language="JavaScript" type="text/javascript">
+    function checkStep() {
+        countX = 0;
+        countO = 0;
+        $(".clk").each(function (index, el) {
+            if (el.value == "X") countX++;
+            if (el.value == "O") countO++;
+        });
+       
+        if ((@Model.Game.PlayerTeamId == 1) && (countX - countO) != 0) return false;
+        if ((@Model.Game.PlayerTeamId == 2) && (countO - countX) >= 0) return false;
+        return true;
+    }
+
+    function clkBtn(btn) {
+        if (document.getElementById("result").innerText != "") return;
+        if (document.getElementById(btn).value != "") return;
+        if (checkStep() == true) {          
+            document.getElementById(btn).value = "@Model.Game.PlayerTeamName";
+            document.forms[0].submit();
+        }
+    }
+
+
+</script>
+<div class="game">
+   
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h4>@Model.Game.Player</h4>
+            </div>
+            <div class="panel-body">
+                <p>
+                    Уровень сложности:
+                    @Model.Game.Level.LevelName                  
+                </p>
+                <p>
+                    Вы играете за:
+                    @Model.Game.PlayerTeamName                   
+                </p>
+            </div>
+        </div>
+        <div id="box" class="boxMain">          
+            @Html.HiddenFor(model => model.Id)
+            <div onclick="clkBtn('f1')"><input type="text" id="f1" name="f1" class="clk" readOnly value="@Model.f1" /></div>
+            <div onclick="clkBtn('f2')"><input type="text" id="f2" name="f2" class="clk" readOnly value="@Model.f2" /></div>
+            <div onclick="clkBtn('f3')"><input type="text" id="f3" name="f3" class="clk" readOnly value="@Model.f3" /></div>
+            <div onclick="clkBtn('f4')"><input type="text" id="f4" name="f4" class="clk" readOnly value="@Model.f4" /></div>
+            <div onclick="clkBtn('f5')"><input type="text" id="f5" name="f5" class="clk" readOnly value="@Model.f5" /></div>
+            <div onclick="clkBtn('f6')"><input type="text" id="f6" name="f6" class="clk" readOnly value="@Model.f6" /></div>
+            <div onclick="clkBtn('f7')"><input type="text" id="f7" name="f7" class="clk" readOnly value="@Model.f7" /></div>
+            <div onclick="clkBtn('f8')"><input type="text" id="f8" name="f8" class="clk" readOnly value="@Model.f8" /></div>
+            <div onclick="clkBtn('f9')"><input type="text" id="f9" name="f9" class="clk" readOnly value="@Model.f9" /></div>
+        </div>            
+    }   
+
+</div>
+
+<h1 class="text-center text-success" id="result">@ViewBag.Message</h1>
+<h3 class="text-center">@Html.ActionLink("Новая игра", "Create", "Game")</h3>
+
+<script language="JavaScript" type="text/javascript">
+    BoxChildren = $('#box>div>input');
+    checkWin("@ViewBag.Message", BoxChildren);
+</script>
+
+

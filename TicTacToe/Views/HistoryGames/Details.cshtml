@@ -1,0 +1,71 @@
+﻿@model TicTacToe.Models.Game
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<p>
+    @* @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |*@
+    @Html.ActionLink("Список игр", "ListGames")
+</p>
+
+<h2>История ходов</h2>
+
+<div>
+    <h4>Игры № @Html.DisplayFor(model => model.Id)</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Player)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Player)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PlayerTeamId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PlayerTeamName)          
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LevelId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Level.LevelName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.WhoWin)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.WhoWin)
+        </dd>
+
+    </dl>   
+
+@foreach (var item in Model.Fields)
+{
+    <div id="box" class="boxHistoryGame">
+        <input type="text" id="f1" name="f1" class="clk" readonly="" value="@Html.DisplayFor(modelItem => item.f1)">
+        <input type="text" id="f2" name="f2" class="clk" readonly="" value="@Html.DisplayFor(modelItem => item.f2)">
+        <input type="text" id="f3" name="f3" class="clk" readonly="" value="@Html.DisplayFor(modelItem => item.f3)">
+        <input type="text" id="f4" name="f4" class="clk" readonly="" value="@Html.DisplayFor(modelItem => item.f4)">
+        <input type="text" id="f5" name="f5" class="clk" readonly="" value="@Html.DisplayFor(modelItem => item.f5)">
+        <input type="text" id="f6" name="f6" class="clk" readonly="" value="@Html.DisplayFor(modelItem => item.f6)">
+        <input type="text" id="f7" name="f7" class="clk" readonly="" value="@Html.DisplayFor(modelItem => item.f7)">
+        <input type="text" id="f8" name="f8" class="clk" readonly="" value="@Html.DisplayFor(modelItem => item.f8)">
+        <input type="text" id="f9" name="f9" class="clk" readonly="" value="@Html.DisplayFor(modelItem => item.f9)">
+    </div>
+}
+
+
+    <script language="JavaScript" type="text/javascript">
+        countBox = $('.boxHistoryGame').length;
+        lastBox = $('.boxHistoryGame')[countBox - 1];
+        lastBoxChildren = lastBox.children;
+        checkWin("@Model.WhoWin", lastBoxChildren);
+    </script>
