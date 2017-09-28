@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using static System.Net.Mime.MediaTypeNames;
 using System.Reflection;
 using System.Data.Entity;
 using System.ComponentModel.DataAnnotations;
