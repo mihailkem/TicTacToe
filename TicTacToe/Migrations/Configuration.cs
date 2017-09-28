@@ -9,7 +9,7 @@ namespace TicTacToe.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;
+            AutomaticMigrationsEnabled = true;
         }
 
         protected override void Seed(TicTacToe.Models.TicTacToeContext context)

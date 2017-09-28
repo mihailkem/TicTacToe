@@ -1,4 +1,4 @@
-﻿@model TicTacToe.Models.Fields
+﻿@model TicTacToe.Models.DtoFields
 
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -12,8 +12,8 @@
             if (el.value == "O") countO++;
         });
        
-        if ((@Model.Game.PlayerTeamId == 1) && (countX - countO) != 0) return false;
-        if ((@Model.Game.PlayerTeamId == 2) && (countO - countX) >= 0) return false;
+        if ((@Model.PlayerTeamId == 1) && (countX - countO) != 0) return false;
+        if ((@Model.PlayerTeamId == 2) && (countO - countX) >= 0) return false;
         return true;
     }
 
@@ -21,7 +21,7 @@
         if (document.getElementById("result").innerText != "") return;
         if (document.getElementById(btn).value != "") return;
         if (checkStep() == true) {          
-            document.getElementById(btn).value = "@Model.Game.PlayerTeamName";
+            document.getElementById(btn).value = "@Model.PlayerTeamName";
             document.forms[0].submit();
         }
     }
@@ -35,16 +35,16 @@
         @Html.AntiForgeryToken()
         <div class="panel panel-primary">
             <div class="panel-heading">
-                <h4>@Model.Game.Player</h4>
+                <h4>@Model.PlayerName</h4>
             </div>
             <div class="panel-body">
                 <p>
                     Уровень сложности:
-                    @Model.Game.Level.LevelName                  
+                    @Model.LevelName                  
                 </p>
                 <p>
                     Вы играете за:
-                    @Model.Game.PlayerTeamName                   
+                    @Model.PlayerTeamName                   
                 </p>
             </div>
         </div>

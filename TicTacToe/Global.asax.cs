@@ -15,7 +15,8 @@ namespace TicTacToe
             Database.SetInitializer<TicTacToeContext>(null);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-                       
+
+            //AutoMapper.Mapper.Initialize(cfg => cfg.AddProfile<AutomapperProfile>());
             Container.IocContainer.Setup();
            
         }

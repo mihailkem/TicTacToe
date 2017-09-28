@@ -4,6 +4,7 @@ using Castle.Windsor.Installer;
 using Castle.MicroKernel.Registration;
 using TicTacToe.Models;
 using TicTacToe.GameRepository;
+using AutoMapper;
 
 namespace TicTacToe.Container
 {
@@ -23,7 +24,15 @@ namespace TicTacToe.Container
                 Component.For<IRepository>().ImplementedBy<MoqRepository>()
                 .Named("MoqRepository")
                 .LifeStyle.Transient                
-                );           
+                );
+                    
+            container.Register(Component.For<IMapper>().UsingFactoryMethod(x =>
+            {
+                return new MapperConfiguration(c =>
+                {
+                    c.AddProfile<AutomapperProfile>();
+                }).CreateMapper();
+            }));
 
             container.Register(AllTypes.FromThisAssembly()
                 .Pick().If(t => t.Name.EndsWith("Controller"))

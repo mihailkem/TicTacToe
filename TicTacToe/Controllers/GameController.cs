@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Web.Mvc;
 using TicTacToe.Models;
-using System.Web.WebPages;
+using AutoMapper;
 
 namespace TicTacToe.Controllers
 {
@@ -11,10 +11,12 @@ namespace TicTacToe.Controllers
     public class GameController : Controller
     {
         private readonly IRepository _Repository;
-        
-        public GameController(IRepository repository)
+        private readonly IMapper _Mapper;
+
+        public GameController(IRepository repository,IMapper mapper)
         {
-            _Repository = repository;            
+            _Repository = repository;
+            _Mapper = mapper;
         }
 
 
@@ -44,6 +46,9 @@ namespace TicTacToe.Controllers
                 return RedirectToAction("Create", "Game");
 
             Game game = _Repository.GetGameById((int)gameId);
+            if (game == null)
+                return RedirectToAction("Create", "Game");
+
             Fields fields = new Fields{ Game = game, GameId = game.Id };
                         
             //если играем за "О", то комп делает первый шаг
@@ -51,24 +56,30 @@ namespace TicTacToe.Controllers
             {                
                 fields = Logics.doStep(fields);                
                 _Repository.AddFields(fields);                
-            }         
-            
-            return View(fields);
+            }
+                        
+            DtoFields dtoFields = _Mapper.Map<Fields, DtoFields>(fields);
+            return View(dtoFields);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Battle(Fields fields)
-        {
+        public ActionResult Battle(DtoFields dtoFields)
+        {            
+            Fields fields = _Mapper.Map<DtoFields, Fields>(dtoFields);
+
             _Repository.AddFields(fields);
             Game game = _Repository.GetGameById(fields.GameId);
+
+            fields.Game = game;
 
             string _whoWin = Logics.whoWin(fields);
             if (!String.IsNullOrEmpty(_whoWin))
             {
                 ViewBag.Message = _whoWin;
             }
-            else if (fields.NumFreeFields.Count > 0) //Если игра не окончена, есть свободная ячейка, то комп делает ход
+            //Если игра не окончена, есть свободная ячейка, то комп делает ход
+            else if (fields.NumFreeFields.Count > 0)            
             {                
                 fields = Logics.doStep(fields);
                 _Repository.AddFields(fields);  
@@ -77,17 +88,17 @@ namespace TicTacToe.Controllers
 
             //если все клетки заняты и никто не выиграл
             if (fields.NumFreeFields.Count == 0 && Logics.whoWin(fields) == "") 
-                 ViewBag.Message = "Ничья";           
+                 ViewBag.Message = "Ничья"; 
 
-
-            if (ViewBag.Message != "")
+            if (!String.IsNullOrEmpty(ViewBag.Message))
             {                
                 game.WhoWin = ViewBag.Message;
                 _Repository.UpdateGame(game);
             }
+                                    
+            dtoFields = _Mapper.Map<Fields, DtoFields>(fields);
 
-            if (fields.Game == null) fields.Game = game;
-            return View(fields);
+            return View(dtoFields);
         }
         
 
