@@ -11,7 +11,7 @@ namespace TicTacToe.Models.Tests
         public void CountFields_ReturnSameCountAsCountProperties()
         {
             Fields fields = new Fields();
-            var countFields = fields.CountFields();
+            int countFields = fields.CountFields();
             Assert.AreEqual(countFields, 9);
         }
 
@@ -39,19 +39,20 @@ namespace TicTacToe.Models.Tests
             
             Fields fields = new Fields();
             fields = fields.SetValue(0, fields, "X");
+
             Assert.AreEqual(testfields.f1, fields.f1);
             CollectionAssert.AreEqual(testfields.NumFreeFields, fields.NumFreeFields);
         }
 
         [TestMethod()]
         public void NumFreeFields_ReturnCorrectlyNumFreeFields()
-        {
-            List<int> numFreeFields = new List<int>();
+        {            
             Fields fields = new Fields();
             fields.f1 = "X";
             fields.f3 = "O";
             fields.f8 = "X";
 
+            List<int> numFreeFields = new List<int>();
             numFreeFields.Add(1);
             numFreeFields.Add(3);
             numFreeFields.Add(4);

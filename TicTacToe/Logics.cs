@@ -142,14 +142,14 @@ namespace TicTacToe
         /// <summary>
         /// Метод определяющий в какую ячейку будет установлено значение на следующем ходу
         /// </summary>
-        /// <param name="numStrategy">Уровень сложности</param>
+        /// <param name="LevelId">Уровень сложности</param>
         /// <param name="playerTeamId">За кого играет игрок 1-Х, 2-О</param>
         /// <param name="fields">Игровое поле</param>
         /// <returns></returns>
-        public static int nextStep(int numStrategy, int playerTeamId ,Fields fields)
+        public static int nextStep(int LevelId, int playerTeamId ,Fields fields)
         {
             int next;
-            switch (numStrategy)
+            switch (LevelId)
             {
                 case 1:
                     return Logics.strategyRandom(fields.NumFreeFields, out next);
@@ -194,10 +194,11 @@ namespace TicTacToe
             }
             return "";
         }
-        
+
         /// <summary>
         /// Функция делающая ход компьютера. Изменяет состояние ячеек игрового поля Fields.
         /// </summary>
+        /// <param name="game">Игра</param>
         /// <param name="fields">Ячейки</param>
         /// <returns>Ячейки с одним измененым значением </returns>
         static public Fields doStep(Fields fields)

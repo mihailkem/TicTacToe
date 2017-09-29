@@ -39,7 +39,7 @@ namespace TicTacToe.Controllers
             return View(game);
         }
 
-        //Есть созданая игра, делаем первый ход
+        //Есть созданая игра, создаем пустое игровое поле и делаем первый ход если нужно
         public ActionResult Battle(int? gameId)
         {
             if (gameId == null)
@@ -67,40 +67,36 @@ namespace TicTacToe.Controllers
         public ActionResult Battle(DtoFields dtoFields)
         {            
             Fields fields = _Mapper.Map<DtoFields, Fields>(dtoFields);
-
             _Repository.AddFields(fields);
-            Game game = _Repository.GetGameById(fields.GameId);
 
+            Game game = _Repository.GetGameById(fields.GameId);
             fields.Game = game;
 
             string _whoWin = Logics.whoWin(fields);
-            if (!String.IsNullOrEmpty(_whoWin))
-            {
-                ViewBag.Message = _whoWin;
-            }
+           
             //Если игра не окончена, есть свободная ячейка, то комп делает ход
-            else if (fields.NumFreeFields.Count > 0)            
+            if (fields.NumFreeFields.Count > 0 && String.IsNullOrEmpty(_whoWin))            
             {                
                 fields = Logics.doStep(fields);
-                _Repository.AddFields(fields);  
-                ViewBag.Message = Logics.whoWin(fields);
+                _Repository.AddFields(fields);                
+                _whoWin = Logics.whoWin(fields);
             }
 
-            //если все клетки заняты и никто не выиграл
-            if (fields.NumFreeFields.Count == 0 && Logics.whoWin(fields) == "") 
-                 ViewBag.Message = "Ничья"; 
+            //если все клетки заняты и никто не выиграл         
+            if (fields.NumFreeFields.Count == 0 && String.IsNullOrEmpty(_whoWin))
+                _whoWin = "Ничья";
 
-            if (!String.IsNullOrEmpty(ViewBag.Message))
+            if (!String.IsNullOrEmpty(_whoWin))
             {                
-                game.WhoWin = ViewBag.Message;
+                game.WhoWin = _whoWin;
                 _Repository.UpdateGame(game);
+                ViewBag.Message = _whoWin;
             }
-                                    
+
             dtoFields = _Mapper.Map<Fields, DtoFields>(fields);
 
             return View(dtoFields);
-        }
-        
+        }       
 
     }
 }

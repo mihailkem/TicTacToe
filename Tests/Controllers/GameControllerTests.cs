@@ -26,7 +26,7 @@ namespace TicTacToe.Controllers.Tests
         }
         
         [TestMethod()]
-        public void Create_GetQuery_AlwaysReturnAllLevels()
+        public void GameCreate_GetQuery_AlwaysReturnAllLevels()
         {           
             int countLevels=MoqRepository.GetLevelList().Count();
 
@@ -37,20 +37,20 @@ namespace TicTacToe.Controllers.Tests
         }
 
         [TestMethod()]
-        public void Create_PostQuery_WhenModelValid_ReturnRedirect()
+        public void GameCreate_PostQuery_WhenModelValid_ReturnRedirect()
         {
             Game game = new Game();
             game.PlayerName = "Player";
             game.LevelId = 1;
             game.PlayerTeamId = 1;
-           
+            
             var result = gameController.Create(game) as RedirectToRouteResult;
 
             Assert.IsNotNull(result);
         }
 
         [TestMethod()]
-        public void Create_PostQuery_WhenModelNotValid_ReturnNotValidGame()
+        public void GameCreate_PostQuery_WhenModelNotValid_ReturnNotValidGame()
         {
             Game game = new Game();
             game.PlayerName = "";
@@ -80,16 +80,26 @@ namespace TicTacToe.Controllers.Tests
         }
 
         [TestMethod()]
-        public void Battle_GetQuery_WhenGameNotExistInRepo_ReturnRedirect()
+        public void Battle_GetQuery_WhenParamGameIdIsNull_ReturnRedirect()
         {
-           int? nullInt = null;
-           var result = gameController.Battle(nullInt) as RedirectToRouteResult;
+           int? gameId = null;
+           var result = gameController.Battle(gameId) as RedirectToRouteResult;
 
            Assert.IsNotNull(result);
         }
-        
+
+
         [TestMethod()]
-        public void Battle_GetQuery_WhenFirstStepAndPlayerPlayForO_ReturnNewFieldWithStepOfComputer()
+        public void Battle_GetQuery_WhenGameNotExistInRepo_ReturnRedirect()
+        {
+            int gameId = 99999999;
+            var result = gameController.Battle(gameId) as RedirectToRouteResult;
+
+            Assert.IsNotNull(result);
+        }
+
+        [TestMethod()]
+        public void Battle_GetQuery_WhenPlayerPlayForO_ReturnNewFieldWithStepOfComputer()
         {
             Game game = new Game();
             game.Id = 1;
@@ -101,7 +111,24 @@ namespace TicTacToe.Controllers.Tests
             ViewResult result = gameController.Battle(game.Id) as ViewResult;
             Fields fields = Mapper.Map<DtoFields, Fields>((DtoFields)result.Model);
 
+            Assert.IsNotNull(fields.FieldsStringArray.Contains("O"));
             Assert.AreEqual(fields.NumFreeFields.Count(), 8);
+        }
+
+        [TestMethod()]
+        public void Battle_GetQuery_WhenPlayerPlayForX_ReturnNewEmptyFields()
+        {
+            Game game = new Game();
+            game.Id = 1;
+            game.PlayerName = "Player";
+            game.LevelId = 1;
+            game.PlayerTeamId = 1;
+            MoqRepository.AddGame(game);
+
+            ViewResult result = gameController.Battle(game.Id) as ViewResult;
+            Fields fields = Mapper.Map<DtoFields, Fields>((DtoFields)result.Model);
+                        
+            Assert.AreEqual(fields.NumFreeFields.Count(), 9);
         }
 
         [TestMethod()]
@@ -142,19 +169,16 @@ namespace TicTacToe.Controllers.Tests
 
             DtoFields dtoFields = new DtoFields();
             dtoFields.GameId = 1;            
-            dtoFields.f1 = "X";           
-            dtoFields.f3 = "X";
-            dtoFields.f4 = "O";
-            dtoFields.f5 = "X";
-            dtoFields.f6 = "O";
-            dtoFields.f7 = "O";
-            dtoFields.f8 = "X";
-            dtoFields.f9 = "O";
+            dtoFields.f1 = "X"; 
+            dtoFields.f8 = "O";
+            int countFreeFieldsBefore = 7;
 
             ViewResult result = gameController.Battle(dtoFields) as ViewResult;
-            Fields fields = Mapper.Map<DtoFields, Fields>((DtoFields)result.Model);
 
-            Assert.AreEqual(fields.CountFields(), 9);
+            Fields fields = Mapper.Map<DtoFields, Fields>((DtoFields)result.Model);
+            int countFreeFieldsAfter = fields.NumFreeFields.Count();
+
+            Assert.AreEqual(countFreeFieldsAfter, countFreeFieldsBefore - 1);
         }
 
         

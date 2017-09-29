@@ -1,6 +1,4 @@
-﻿
-
-namespace TicTacToe.Models
+﻿namespace TicTacToe.Models
 {
     public class DtoFields
     {
