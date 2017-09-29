@@ -26,6 +26,23 @@ namespace TicTacToe.Controllers
             return View();
         }
 
+        public ActionResult Restart(int? gameId)
+        {
+            if (gameId == null) return RedirectToAction("Create", "Game");
+
+            Game oldGame = _Repository.GetGameById((int)gameId);
+            if (oldGame == null) return RedirectToAction("Create", "Game");
+
+            Game newGame = new Game();
+            newGame.LevelId = oldGame.LevelId;
+            newGame.PlayerName = oldGame.PlayerName;
+            newGame.PlayerTeamId = oldGame.PlayerTeamId;
+
+            _Repository.AddGame(newGame);
+
+            return RedirectToAction("Battle", new { gameId = newGame.Id });
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(Game game)

@@ -65,7 +65,9 @@
 </div>
 
 <h1 class="text-center text-success" id="result">@ViewBag.Message</h1>
-<h3 class="text-center">@Html.ActionLink("Новая игра", "Create", "Game")</h3>
+<h3 class="text-center">@Html.ActionLink("Новая игра", "Restart", new { gameId = Model.GameId })</h3>
+<h4 class="text-center">@Html.ActionLink("Назад", "Create", "Game")</h4>
+
 
 <script language="JavaScript" type="text/javascript">
     BoxChildren = $('#box>div>input');
