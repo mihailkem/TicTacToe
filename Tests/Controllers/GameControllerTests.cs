@@ -1,7 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 using TicTacToe.Models;
-using TicTacToe.GameRepository;
 using TicTacToe.Container;
 using System.Web.Mvc;
 using System.Collections.Generic;

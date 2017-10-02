@@ -161,18 +161,15 @@
     <Compile Include="Container\WindsorControllerFactory.cs" />
     <Compile Include="Controllers\HistoryGamesController.cs" />
     <Compile Include="Controllers\GameController.cs" />
+    <Compile Include="GameRepository\MoqRepository.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Container\IocContainer.cs" />
     <Compile Include="GameRepository\IRepository.cs" />
-    <Compile Include="Migrations\201709250407034_Initial.cs" />
-    <Compile Include="Migrations\201709250407034_Initial.Designer.cs">
-      <DependentUpon>201709250407034_Initial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201709280547103_Rename Player to PlayerName.cs" />
-    <Compile Include="Migrations\201709280547103_Rename Player to PlayerName.Designer.cs">
-      <DependentUpon>201709280547103_Rename Player to PlayerName.cs</DependentUpon>
+    <Compile Include="Migrations\201710020332404_Initial.cs" />
+    <Compile Include="Migrations\201710020332404_Initial.Designer.cs">
+      <DependentUpon>201710020332404_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AutomapperProfile.cs" />
@@ -184,7 +181,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Logics.cs" />
     <Compile Include="GameRepository\Repository.cs" />
-    <Compile Include="GameRepository\MoqRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\TicTacToeGameDB.mdf" />
@@ -254,11 +250,8 @@
     <Content Include="Scripts\jquery-3.1.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201709250407034_Initial.resx">
-      <DependentUpon>201709250407034_Initial.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201709280547103_Rename Player to PlayerName.resx">
-      <DependentUpon>201709280547103_Rename Player to PlayerName.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201710020332404_Initial.resx">
+      <DependentUpon>201710020332404_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

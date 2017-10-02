@@ -5,19 +5,16 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace TicTacToe.Models
 {
     public class Game
-    {
-        [Key]
+    {        
         public int Id { get; set; }
 
-        [Display(Name = "Имя")]
-        [Required]
+        [Display(Name = "Имя")]        
         public string PlayerName { get; set; }
 
-        [Display(Name = "За кого играете")]
-        [Required]
+        [Display(Name = "За кого играете")]        
         public int PlayerTeamId { get; set; }
 
-        [ForeignKey("Level")]
+        
         [Display(Name = "Уровень сложности ")]
         public int LevelId { get; set; }
         public virtual Level Level { get; set; }

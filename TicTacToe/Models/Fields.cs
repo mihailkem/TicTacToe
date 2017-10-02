@@ -11,8 +11,7 @@ namespace TicTacToe.Models
     /// Игровое поле
     /// </summary>
     public class Fields
-    {
-        [Key]
+    {       
         public int Id { get; set; }
         public string f1 { get; set; }
         public string f2 { get; set; }
@@ -23,8 +22,7 @@ namespace TicTacToe.Models
         public string f7 { get; set; }
         public string f8 { get; set; }
         public string f9 { get; set; }
-
-        [ForeignKey("Game")]
+               
         public int GameId { get; set; }
         public virtual Game Game { get; set; }
 
@@ -48,15 +46,15 @@ namespace TicTacToe.Models
         /// <summary>
         /// Устанавливает значение в ячейку игрового поля по его индексу.
         /// </summary>
-        /// <param name="_numFileds">Номер ячейки. От 0 до 8</param>
-        /// <param name="_fields">Игровое поле в котором надо сделать изменение</param>
+        /// <param name="numFileds">Номер ячейки. От 0 до 8</param>
+        /// <param name="fields">Игровое поле в котором надо сделать изменение</param>
         /// <param name="valueTeam">Значение, которое надо установить. Х или О</param>
         /// <returns>Измененное игровое поле</returns>
-        public Fields SetValue(int _numFileds, Fields _fields, string valueTeam)
+        public Fields SetValue(int numFileds, Fields fields, string valueTeam)
         {
-            if (_numFileds >= 0 && _numFileds <= 8)
-                typeof(Fields).GetProperties().FirstOrDefault(x => x.Name == "f" + (_numFileds + 1).ToString()).SetValue(_fields, valueTeam);
-            return _fields;
+            if (numFileds >= 0 && numFileds <= 8)
+                typeof(Fields).GetProperties().FirstOrDefault(x => x.Name == "f" + (numFileds + 1).ToString()).SetValue(fields, valueTeam);
+            return fields;
         }
 
         /// <summary>
