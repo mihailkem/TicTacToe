@@ -92,8 +92,7 @@ namespace TicTacToe.Controllers.Tests
         public void Battle_GetQuery_WhenGameNotExistInRepo_ReturnRedirect()
         {
             int gameId = 99999999;
-            var result = gameController.Battle(gameId) as RedirectToRouteResult;
-
+            RedirectToRouteResult result = gameController.Battle(gameId) as RedirectToRouteResult;            
             Assert.IsNotNull(result);
         }
 

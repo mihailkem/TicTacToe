@@ -177,7 +177,7 @@
     <Compile Include="Models\Fields.cs" />
     <Compile Include="Models\Game.cs" />
     <Compile Include="Models\Level.cs" />
-    <Compile Include="Models\TicTacToeContext.cs" />
+    <Compile Include="GameRepository\TicTacToeContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Logics.cs" />
     <Compile Include="GameRepository\Repository.cs" />
