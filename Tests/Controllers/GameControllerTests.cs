@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using TicTacToe.Controllers;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 using TicTacToe.Models;
 using TicTacToe.Container;
@@ -12,25 +13,25 @@ namespace TicTacToe.Controllers.Tests
 {
     [TestClass()]
     public class GameControllerTests
-    {       
-        public IMapper Mapper;     
+    {
+        public IMapper Mapper;
 
         public GameControllerTests()
         {
-            IocContainer.Setup();           
-            Mapper = IocContainer.container.Resolve<IMapper>();           
+            IocContainer.Setup();
+            Mapper = IocContainer.container.Resolve<IMapper>();
         }
-        
+
         [TestMethod()]
         public void GameCreate_GetQuery_AlwaysReturnAllLevels()
         {
             // Arrange
             var mockRepo = new Mock<IRepository>();
-            mockRepo.Setup(repo => repo.GetLevelList()).Returns(new List<Level>() { new Level()});
+            mockRepo.Setup(repo => repo.GetLevelList()).Returns(new List<Level>() { new Level() });
             var controller = new GameController(mockRepo.Object, Mapper);
-          
+
             // Act
-            ViewResult result = controller.Create() as ViewResult;           
+            ViewResult result = controller.Create() as ViewResult;
             List<Level> levels = result.ViewData["Levels"] as List<Level>;
 
             // Assert
@@ -41,16 +42,16 @@ namespace TicTacToe.Controllers.Tests
         public void GameCreate_PostQuery_WhenModelValid_ReturnRedirect()
         {
             // Arrange
-            var mockRepo = new Mock<IRepository>();           
-            var controller = new GameController(mockRepo.Object, Mapper);          
+            var mockRepo = new Mock<IRepository>();
+            var controller = new GameController(mockRepo.Object, Mapper);
             controller.ModelState.Clear();
             Game game = new Game();
 
             // Act
             var result = controller.Create(game) as RedirectToRouteResult;
-                        
+
             // Assert
-            Assert.IsNotNull(result, "Не произошел Redirect");            
+            Assert.IsNotNull(result, "Не произошел Redirect");
             mockRepo.Verify(a => a.AddGame(game), Times.Once, "Метод добавления игры в БД не выполнился");
         }
 
@@ -59,7 +60,7 @@ namespace TicTacToe.Controllers.Tests
         {
             // Arrange
             var mockRepo = new Mock<IRepository>();
-            var controller = new GameController(mockRepo.Object, Mapper);            
+            var controller = new GameController(mockRepo.Object, Mapper);
             Game game = new Game();
             controller.ModelState.AddModelError("Name", "Name is empty");
 
@@ -83,8 +84,8 @@ namespace TicTacToe.Controllers.Tests
             ViewResult result = controller.Battle(1) as ViewResult;
 
             // Assert   
-            Assert.IsNotNull(result.Model, "Существующая игра извлечена из БД, но модель DtoFields не дошла до View");            
-           
+            Assert.IsNotNull(result.Model, "Существующая игра извлечена из БД, но модель DtoFields не дошла до View");
+
         }
 
         [TestMethod()]
@@ -101,14 +102,14 @@ namespace TicTacToe.Controllers.Tests
             // Assert 
             Assert.IsNotNull(result, "Не произошел Redirect");
         }
-        
+
         [TestMethod()]
         public void Battle_GetQuery_WhenGameNotExistInRepo_ReturnRedirect()
         {
             // Arrange
             var mockRepo = new Mock<IRepository>();
             var controller = new GameController(mockRepo.Object, Mapper);
-           
+
             Game game = null;
             mockRepo.Setup(repo => repo.GetGameById(It.IsAny<int>())).Returns(game);
 
@@ -126,13 +127,13 @@ namespace TicTacToe.Controllers.Tests
             var mockRepo = new Mock<IRepository>();
             var controller = new GameController(mockRepo.Object, Mapper);
             mockRepo.Setup(repo => repo.GetGameById(It.IsAny<int>())).Returns(new Game() { PlayerTeamId = 2 });
-           
+
             // Act
             ViewResult result = controller.Battle(1) as ViewResult;
             Fields fields = Mapper.Map<DtoFields, Fields>((DtoFields)result.Model);
 
             // Assert 
-            Assert.IsTrue(fields.FieldsStringArray.Contains("X"),"Игровое поле не содержит первого хода компьютера");
+            Assert.IsTrue(fields.FieldsStringArray.Contains("X"), "Игровое поле не содержит первого хода компьютера");
             Assert.AreEqual(fields.NumFreeFields.Count(), 8, "Игровое поле содержит больше чем одно занятое поле");
         }
 
@@ -143,13 +144,13 @@ namespace TicTacToe.Controllers.Tests
             var mockRepo = new Mock<IRepository>();
             var controller = new GameController(mockRepo.Object, Mapper);
             mockRepo.Setup(repo => repo.GetGameById(It.IsAny<int>())).Returns(new Game() { PlayerTeamId = 1 });
-            
+
             // Act
             ViewResult result = controller.Battle(It.IsAny<int>()) as ViewResult;
             Fields fields = Mapper.Map<DtoFields, Fields>((DtoFields)result.Model);
 
             // Assert 
-            Assert.IsNotNull(fields,"Игровое поле не создано");
+            Assert.IsNotNull(fields, "Игровое поле не создано");
             Assert.AreEqual(fields.NumFreeFields.Count(), 9, "Игровое поле создано, но оно не пустое");
         }
 
@@ -162,8 +163,8 @@ namespace TicTacToe.Controllers.Tests
             Game game = new Game();
             game.PlayerTeamId = 1;
             mockRepo.Setup(repo => repo.GetGameById(It.IsAny<int>())).Returns(game);
-            
-            DtoFields dtoFields = new DtoFields();                     
+
+            DtoFields dtoFields = new DtoFields();
             dtoFields.f1 = "X";
             dtoFields.f2 = "X";
             dtoFields.f3 = "X";
@@ -179,8 +180,8 @@ namespace TicTacToe.Controllers.Tests
 
             // Assert            
             Assert.IsNotNull((result.ViewData["Message"]), "Сообщение о конце игры пустое");
-            Assert.IsNotNull(String.IsNullOrEmpty((result.ViewData["Message"]).ToString()),"Сообщение о конце игры пустое");
-            mockRepo.Verify(a => a.UpdateGame(game), Times.Once,"Игра не обновилась в базе");
+            Assert.IsNotNull(String.IsNullOrEmpty((result.ViewData["Message"]).ToString()), "Сообщение о конце игры пустое");
+            mockRepo.Verify(a => a.UpdateGame(game), Times.Once, "Игра не обновилась в базе");
 
         }
 
@@ -192,10 +193,10 @@ namespace TicTacToe.Controllers.Tests
             var controller = new GameController(mockRepo.Object, Mapper);
             Game game = new Game();
             game.PlayerTeamId = 1;
-            mockRepo.Setup(repo => repo.GetGameById(It.IsAny<int>())).Returns(game);            
+            mockRepo.Setup(repo => repo.GetGameById(It.IsAny<int>())).Returns(game);
 
-            DtoFields dtoFields = new DtoFields();                      
-            dtoFields.f1 = "X"; 
+            DtoFields dtoFields = new DtoFields();
+            dtoFields.f1 = "X";
             dtoFields.f8 = "O";
             int countFreeFieldsBefore = 7;
 
@@ -206,11 +207,60 @@ namespace TicTacToe.Controllers.Tests
             Fields fields = Mapper.Map<DtoFields, Fields>((DtoFields)result.Model);
             int countFreeFieldsAfter = fields.NumFreeFields.Count();
 
-            Assert.AreEqual(countFreeFieldsAfter, countFreeFieldsBefore - 1,"Компьютер не сделал ход");
+            Assert.AreEqual(countFreeFieldsAfter, countFreeFieldsBefore - 1, "Компьютер не сделал ход");
             mockRepo.Verify(a => a.AddFields(It.IsAny<Fields>()), Times.AtLeastOnce, "Игровое поле не добавилось в базу");
 
         }
 
+        [TestMethod()]
+        public void Restart_GetQuery_WhenParamGameIdIsNull_ReturnRedirect()
+        {
+            // Arrange
+            var mockRepo = new Mock<IRepository>();
+            var controller = new GameController(mockRepo.Object, Mapper);
+            int? gameId = null;
 
+            // Act
+            var result = controller.Restart(gameId) as RedirectToRouteResult;
+
+            // Assert 
+            Assert.IsNotNull(result, "Не произошел Redirect");
+        }
+
+        [TestMethod()]
+        public void Restart_GetQuery_WhenGameNotExistInRepo_ReturnRedirect()
+        {
+            // Arrange
+            var mockRepo = new Mock<IRepository>();
+            var controller = new GameController(mockRepo.Object, Mapper);
+
+            Game game = null;
+            mockRepo.Setup(repo => repo.GetGameById(It.IsAny<int>())).Returns(game);
+
+            // Act
+            RedirectToRouteResult result = controller.Restart(It.IsAny<int>()) as RedirectToRouteResult;
+
+            // Assert 
+            Assert.IsNotNull(result, "Не произошел Redirect");
+        }
+
+        [TestMethod()]
+        public void Restart_GetQuery_WhenOldGameExist_ReturnRedirectWithNewGame()
+        {
+            // Arrange
+            var mockRepo = new Mock<IRepository>();
+            var controller = new GameController(mockRepo.Object, Mapper);
+
+            Game game = new Game();            
+            mockRepo.Setup(repo => repo.GetGameById(It.IsAny<int>())).Returns(game);
+
+            // Act
+            RedirectToRouteResult result = controller.Restart(It.IsAny<int>()) as RedirectToRouteResult;
+
+            // Assert 
+            Assert.AreEqual("Battle", result.RouteValues["action"],"Redirect не на Game/Battle");                      
+            mockRepo.Verify(a => a.AddGame(It.IsAny<Game>()), Times.Once, "Новая игра не добавилось в базу");
+
+        }
     }
 }

@@ -161,7 +161,6 @@
     <Compile Include="Container\WindsorControllerFactory.cs" />
     <Compile Include="Controllers\HistoryGamesController.cs" />
     <Compile Include="Controllers\GameController.cs" />
-    <Compile Include="GameRepository\MoqRepository.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

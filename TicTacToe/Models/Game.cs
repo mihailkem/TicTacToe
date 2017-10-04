@@ -4,6 +4,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TicTacToe.Models
 {
+    /// <summary>
+    /// Класс с параметрами игры
+    /// </summary>
     public class Game
     {        
         public int Id { get; set; }
@@ -13,7 +16,6 @@ namespace TicTacToe.Models
 
         [Display(Name = "За кого играете")]        
         public int PlayerTeamId { get; set; }
-
         
         [Display(Name = "Уровень сложности ")]
         public int LevelId { get; set; }

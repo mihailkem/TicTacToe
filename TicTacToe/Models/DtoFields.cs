@@ -1,5 +1,10 @@
 ﻿namespace TicTacToe.Models
 {
+    /// <summary>
+    /// Класс игрового поля для передачи его во View.
+    /// Создан чтобы в представлении не тянуть данные из таблиц Game и Level,
+    /// а передевать все в одной моделе.
+    /// </summary>
     public class DtoFields
     {
         public int Id { get; set; }

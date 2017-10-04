@@ -20,10 +20,7 @@ namespace TicTacToe.Container
                 Component.For<IRepository>().ImplementedBy<Repository>()
                 .Named("Repository")
                 .LifeStyle.Transient                
-                .DynamicParameters((r, k) => { k["Context"] = new TicTacToeContext();}),
-                Component.For<IRepository>().ImplementedBy<MoqRepository>()
-                .Named("MoqRepository")
-                .LifeStyle.Transient                
+                .DynamicParameters((r, k) => { k["Context"] = new TicTacToeContext();})                
                 );
                     
             container.Register(Component.For<IMapper>().UsingFactoryMethod(x =>

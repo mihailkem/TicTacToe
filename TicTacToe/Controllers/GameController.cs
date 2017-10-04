@@ -4,10 +4,7 @@ using TicTacToe.Models;
 using AutoMapper;
 
 namespace TicTacToe.Controllers
-{
-    /// <summary>
-    /// Класс создания новой игры
-    /// </summary>
+{    
     public class GameController : Controller
     {
         private readonly IRepository _Repository;
